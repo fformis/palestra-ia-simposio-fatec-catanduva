@@ -1,0 +1,1 @@
+As definições estão em [./.claude/CLAUDE.md]

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Palestra.Api/Palestra.Api.csproj" />
+    <Project Path="src/Palestra.Application/Palestra.Application.csproj" />
+    <Project Path="src/Palestra.Domain/Palestra.Domain.csproj" />
+    <Project Path="src/Palestra.Infrastructure/Palestra.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Palestra.Tests/Palestra.Tests.csproj" />
+  </Folder>
+</Solution>
