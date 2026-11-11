@@ -1,0 +1,23 @@
+.shell { min-height: 100vh; }
+.main { min-width: 0; }
+.content { padding: var(--space-6) var(--space-4) var(--space-12); max-width: 72rem; margin: 0 auto; }
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: var(--color-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) ease;
+}
+.backdropOpen { opacity: 1; pointer-events: auto; }
+
+@media (min-width: 768px) {
+  .content { padding: var(--space-8) var(--space-8) var(--space-12); }
+}
+@media (min-width: 1024px) {
+  .main { margin-left: var(--sidebar-width); transition: margin-left var(--dur-base) var(--ease-out); }
+  .collapsed .main { margin-left: var(--sidebar-width-collapsed); }
+  .backdrop { display: none; }
+}

@@ -1,0 +1,14 @@
+.alert {
+  padding: var(--space-4);
+  border: 1px solid var(--tone);
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--tone) 12%, var(--color-surface));
+  animation: fade-up var(--dur-base) var(--ease-out) both;
+}
+.alert p { margin-top: var(--space-1); color: var(--color-text-muted); font-size: var(--text-sm); }
+.success { --tone: var(--color-success); }
+.warning { --tone: var(--color-warning); }
+.danger { --tone: var(--color-danger); }
+.info { --tone: var(--color-info); }
