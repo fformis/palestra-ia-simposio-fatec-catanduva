@@ -14,3 +14,6 @@ export type ApiErrorCode =
   | 'locked'
   | 'weak_password'
   | 'invalid_link'
+  | 'invalid_image'
+  | 'image_too_large'
+  | 'not_found'

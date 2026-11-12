@@ -80,7 +80,13 @@
   background: var(--color-primary-soft);
   font-weight: 700;
   white-space: nowrap;
+  color: var(--color-text);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
 }
+.user:hover, .user[aria-current='page'] { border-color: var(--color-primary); }
+.user:hover { box-shadow: var(--shadow-sm); }
 .avatar {
   display: grid;
   place-items: center;

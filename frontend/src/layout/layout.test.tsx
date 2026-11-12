@@ -62,8 +62,14 @@ it('recolher o menu é lembrado após recarregar', async () => {
 // RF-19 / RF-22
 it('menu mostra nome e sobrenome no topo e Sair encerra a sessão', async () => {
   setup()
-  expect(screen.getByRole('group', { name: 'Usuário: Ana Silva' })).toHaveTextContent('Ana Silva')
+  expect(screen.getByRole('link', { name: 'Abrir perfil de Ana Silva' })).toHaveTextContent('Ana Silva')
   await userEvent.click(screen.getByRole('button', { name: 'Sair' }))
   expect(logout).toHaveBeenCalled()
   expect(await screen.findByText('tela de login')).toBeInTheDocument()
+})
+
+// Spec 004, RF-01
+it('nome do usuário no menu leva ao perfil', () => {
+  setup()
+  expect(screen.getByRole('link', { name: 'Abrir perfil de Ana Silva' })).toHaveAttribute('href', '/perfil')
 })

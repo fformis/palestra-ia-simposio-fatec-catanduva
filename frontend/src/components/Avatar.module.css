@@ -1,0 +1,13 @@
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: var(--radius-full);
+  color: var(--color-on-primary);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  font-weight: 700;
+  object-fit: cover;
+  user-select: none;
+}
+.md { width: 2.25rem; height: 2.25rem; font-size: var(--text-sm); }
+.lg { width: 7rem; height: 7rem; font-size: var(--text-3xl); box-shadow: var(--shadow-md); }
