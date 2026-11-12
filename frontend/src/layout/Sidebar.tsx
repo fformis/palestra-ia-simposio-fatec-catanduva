@@ -38,7 +38,7 @@ export function Sidebar({ id, open, collapsed, onToggleCollapsed, onClose }: Sid
         </button>
       </div>
 
-      {user && <UserBadge user={user} />}
+      {user && <UserBadge user={user} onNavigate={onClose} />}
 
       <nav aria-label="Principal" className={styles.nav}>
         <ul className={styles.list} style={{ '--active-index': Math.max(activeIndex, 0) } as React.CSSProperties}>

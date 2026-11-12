@@ -1,15 +1,17 @@
+import { NavLink } from 'react-router'
+import { initialsOf } from '../components/helpers'
 import type { AuthUser } from '../services/authTypes'
 import styles from './Sidebar.module.css'
 
-export function UserBadge({ user }: { user: AuthUser }) {
+/** Usuário logado no topo do menu; leva ao perfil (spec 004, RF-01). */
+export function UserBadge({ user, onNavigate }: { user: AuthUser; onNavigate?: () => void }) {
   const fullName = `${user.firstName} ${user.lastName}`
-  const initials = `${user.firstName[0] ?? ''}${user.lastName[0] ?? ''}`.toUpperCase()
   return (
-    <div className={styles.user} title={fullName} aria-label={`Usuário: ${fullName}`} role="group">
+    <NavLink to="/perfil" className={styles.user} title={fullName} aria-label={`Abrir perfil de ${fullName}`} onClick={onNavigate}>
       <span className={styles.avatar} aria-hidden="true">
-        {initials}
+        {initialsOf(fullName)}
       </span>
       <span className={styles.userName}>{fullName}</span>
-    </div>
+    </NavLink>
   )
 }

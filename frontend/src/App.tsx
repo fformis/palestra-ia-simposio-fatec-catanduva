@@ -9,6 +9,7 @@ import { ForgotPassword } from './pages/auth/ForgotPassword'
 import { Login } from './pages/auth/Login'
 import { Register } from './pages/auth/Register'
 import { SetPassword } from './pages/auth/SetPassword'
+import { Profile } from './pages/profile/Profile'
 import { ThemeProvider } from './theme/ThemeProvider'
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
             <Route element={<RequireAuth />}>
               <Route element={<AppLayout />}>
                 <Route index element={<Home />} />
+                <Route path="perfil" element={<Profile />} />
                 <Route path="design-system" element={<DesignSystem />} />
               </Route>
             </Route>

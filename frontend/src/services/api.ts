@@ -1,6 +1,6 @@
 import type { ApiErrorCode } from './authTypes'
 
-const BASE_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:8080'
+export const BASE_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:8080'
 
 export class ApiError extends Error {
   readonly status: number
@@ -24,12 +24,14 @@ export function setUnauthorizedHandler(handler: (() => void) | undefined) {
   onUnauthorized = handler
 }
 
-export async function api<T = void>(method: 'GET' | 'POST', path: string, body?: unknown): Promise<T> {
+/** `body` comum vai como JSON; `FormData` (ex.: envio de foto) vai como multipart, com o cabeçalho definido pelo navegador. */
+export async function api<T = void>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', path: string, body?: unknown): Promise<T> {
+  const isForm = body instanceof FormData
   const response = await fetch(`${BASE_URL}${path}`, {
     method,
     credentials: 'include',
-    headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: body === undefined || isForm ? undefined : { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
   })
 
   if (!response.ok) {

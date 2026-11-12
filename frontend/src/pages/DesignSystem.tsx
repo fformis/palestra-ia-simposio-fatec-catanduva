@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import { Alert } from '../components/Alert'
+import { Avatar } from '../components/Avatar'
 import { Badge } from '../components/Badge'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
+import { MonthYearField } from '../components/MonthYearField'
+import { Select } from '../components/Select'
 import { Skeleton } from '../components/Skeleton'
 import { Spinner } from '../components/Spinner'
+import { TextArea } from '../components/TextArea'
 import { TextField } from '../components/TextField'
 import { useTheme } from '../theme/themeContext'
 import styles from './pages.module.css'
@@ -45,6 +49,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export function DesignSystem() {
   const { resolved } = useTheme()
   const [replay, setReplay] = useState(0)
+  const [month, setMonth] = useState('')
   return (
     <div className={styles.page}>
       <div>
@@ -115,6 +120,17 @@ export function DesignSystem() {
         <div className={styles.stack}>
           <TextField label="Nome" placeholder="Seu nome" help="Como devemos chamar você." />
           <TextField label="E-mail" defaultValue="invalido" error="Informe um e-mail válido." />
+          <TextArea label="Bio" placeholder="Fale sobre você" help="Texto livre, com várias linhas." />
+          <Select label="Nível" defaultValue="">
+            <option value="">Selecione</option>
+            <option value="superior">Superior</option>
+            <option value="mestrado">Mestrado</option>
+          </Select>
+          <MonthYearField label="Início" value={month} onChange={setMonth} help={month ? `Valor: ${month}` : 'Escolha mês e ano.'} />
+          <div className={styles.row}>
+            <Avatar name="Ana Silva" />
+            <Avatar name="Ana Silva" size="lg" />
+          </div>
           <Alert tone="success" title="Tudo certo">Alteração salva.</Alert>
           <Alert tone="warning" title="Atenção">Revise os dados antes de continuar.</Alert>
           <Alert tone="danger" title="Erro">Não foi possível concluir.</Alert>

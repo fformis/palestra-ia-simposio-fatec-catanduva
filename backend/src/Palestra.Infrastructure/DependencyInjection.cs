@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Palestra.Application.Auth;
+using Palestra.Application.Profiles;
 using Palestra.Infrastructure.Auth;
 using Palestra.Infrastructure.Persistence;
 
@@ -33,6 +34,18 @@ public static class DependencyInjection
         services.AddScoped<ForgotPassword>();
         services.AddScoped<Login>();
         services.AddScoped<GetCurrentUser>();
+
+        services.AddSingleton(config.GetSection("Profile").Get<ProfileOptions>() ?? new ProfileOptions());
+        services.AddScoped<IProfileRepository, ProfileRepository>();
+        services.AddScoped<GetProfile>();
+        services.AddScoped<UpdateBio>();
+        services.AddScoped<UploadPhoto>();
+        services.AddScoped<GetPhoto>();
+        services.AddScoped<RemovePhoto>();
+        services.AddScoped<SaveOccupation>();
+        services.AddScoped<SaveEducation>();
+        services.AddScoped<SaveCourse>();
+        services.AddScoped(typeof(RemoveItem<>));
         return services;
     }
 }

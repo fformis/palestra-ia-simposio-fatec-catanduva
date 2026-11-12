@@ -76,3 +76,24 @@ export const LogoutIcon = () => (
     <path d="M16 17l5-5-5-5M21 12H9" />
   </Icon>
 )
+export const PlusIcon = () => (
+  <Icon>
+    <path d="M12 5v14M5 12h14" />
+  </Icon>
+)
+export const PencilIcon = () => (
+  <Icon>
+    <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" />
+  </Icon>
+)
+export const TrashIcon = () => (
+  <Icon>
+    <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6" />
+  </Icon>
+)
+export const CameraIcon = () => (
+  <Icon>
+    <path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z" />
+    <circle cx="12" cy="13" r="4" />
+  </Icon>
+)
