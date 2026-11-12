@@ -13,3 +13,7 @@
 .input[aria-invalid='true'] { border-color: var(--color-danger); }
 .help { font-size: var(--text-sm); color: var(--color-text-muted); }
 .error { font-size: var(--text-sm); color: var(--color-danger); }
+
+.control { position: relative; display: grid; }
+.withAdornment { padding-right: calc(var(--touch-target) + var(--space-1)); }
+.adornment { position: absolute; inset: 0 0 0 auto; display: grid; place-items: center; }

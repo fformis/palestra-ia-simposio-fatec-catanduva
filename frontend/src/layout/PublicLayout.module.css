@@ -1,0 +1,14 @@
+.shell { min-height: 100vh; display: flex; flex-direction: column; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); }
+.brand { display: flex; align-items: center; gap: var(--space-3); font-weight: 700; }
+.logo {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  color: var(--color-on-primary);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+}
+.main { flex: 1; display: grid; place-items: start center; padding: var(--space-6) var(--space-4) var(--space-12); }
+.main > * { width: min(100%, 26rem); }

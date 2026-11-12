@@ -58,3 +58,21 @@ export const ChevronIcon = () => (
     <path d="M15 6l-6 6 6 6" />
   </Icon>
 )
+export const EyeIcon = () => (
+  <Icon>
+    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" />
+    <circle cx="12" cy="12" r="3" />
+  </Icon>
+)
+export const EyeOffIcon = () => (
+  <Icon>
+    <path d="M17.9 17.9A10.8 10.8 0 0 1 12 19C5.6 19 2 12 2 12a18 18 0 0 1 4.1-5.1M9.9 5.2A10 10 0 0 1 12 5c6.4 0 10 7 10 7a18 18 0 0 1-2.2 3.2" />
+    <path d="M3 3l18 18M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+  </Icon>
+)
+export const LogoutIcon = () => (
+  <Icon>
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <path d="M16 17l5-5-5-5M21 12H9" />
+  </Icon>
+)

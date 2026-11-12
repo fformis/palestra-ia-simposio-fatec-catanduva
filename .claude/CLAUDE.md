@@ -31,9 +31,10 @@ C# .NET 10 / ASP.NET Core / EF Core (Code First) · Arquitetura Limpa · xUnit �
 
 ## Comandos
 ```bash
-cp .env.example .env && docker compose up --build   # sobe tudo: web :5173 · api :8080 · postgres :5432
+cp .env.example .env && docker compose up --build   # sobe tudo: web :5173 · api :8080 · postgres :5432 · e-mails de teste (smtp4dev) :3100
 dotnet test --project backend/tests/Palestra.Tests  # testes backend (xUnit v3)
 cd frontend && npm test                             # testes frontend (Vitest)
+docker compose exec api dotnet ef database update --project src/Palestra.Infrastructure --startup-project src/Palestra.Api   # aplica migrations (tool em backend/dotnet-tools.json)
 ```
 Solution: `backend/Palestra.slnx` (Domain, Application, Infrastructure, Api + Palestra.Tests). Health check: `GET /health`.
 

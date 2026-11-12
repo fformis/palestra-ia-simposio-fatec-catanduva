@@ -1,6 +1,9 @@
 import { NavLink, useLocation } from 'react-router'
-import { ChevronIcon, CloseIcon } from '../components/icons'
+import { useNavigate } from 'react-router'
+import { useAuth } from '../auth/authContext'
+import { ChevronIcon, CloseIcon, LogoutIcon } from '../components/icons'
 import { navItems } from './navItems'
+import { UserBadge } from './UserBadge'
 import styles from './Sidebar.module.css'
 
 interface SidebarProps {
@@ -13,6 +16,12 @@ interface SidebarProps {
 
 export function Sidebar({ id, open, collapsed, onToggleCollapsed, onClose }: SidebarProps) {
   const { pathname } = useLocation()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const signOut = async () => {
+    await logout()
+    navigate('/entrar', { replace: true })
+  }
   const activeIndex = navItems.findIndex((i) => (i.to === '/' ? pathname === '/' : pathname.startsWith(i.to)))
   const cls = [styles.sidebar, open && styles.open, collapsed && styles.collapsed].filter(Boolean).join(' ')
 
@@ -29,6 +38,8 @@ export function Sidebar({ id, open, collapsed, onToggleCollapsed, onClose }: Sid
         </button>
       </div>
 
+      {user && <UserBadge user={user} />}
+
       <nav aria-label="Principal" className={styles.nav}>
         <ul className={styles.list} style={{ '--active-index': Math.max(activeIndex, 0) } as React.CSSProperties}>
           {activeIndex >= 0 && <li aria-hidden="true" className={styles.indicator} />}
@@ -42,6 +53,11 @@ export function Sidebar({ id, open, collapsed, onToggleCollapsed, onClose }: Sid
           ))}
         </ul>
       </nav>
+
+      <button type="button" className={styles.logoutBtn} onClick={signOut} title={collapsed ? 'Sair' : undefined}>
+        <LogoutIcon />
+        <span className={styles.label}>Sair</span>
+      </button>
 
       <button
         type="button"

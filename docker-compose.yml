@@ -24,8 +24,13 @@ services:
     ports: ["8080:8080"]
     depends_on:
       db: { condition: service_healthy }
+      smtp4dev: { condition: service_started }
     volumes:
       - ./backend:/app
+
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    ports: ["3100:80", "2525:25"]
 
   frontend:
     build: ./frontend
