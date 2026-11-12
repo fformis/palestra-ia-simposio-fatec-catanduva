@@ -172,7 +172,7 @@ Frontend — `*.test.tsx` ao lado do código (Vitest + RTL, `authService` simula
 Comandos: `dotnet test --project backend/tests/Palestra.Tests` · `cd frontend && npm test && npm run lint && npm run build`. Verificação final manual: `docker compose up --build -V` → cadastrar → abrir e-mail em :3100 → definir senha → entrar → conferir menu → Sair → esqueci minha senha.
 
 ## Verificação da constituição
-- [x] Spec primeiro (spec em revisão, sem pendências; aprovar antes de `/tasks`)
+- [x] Spec primeiro (spec em revisão, sem pendências; aprovar antes de `/tarefas`)
 - [x] Simplicidade (sem Identity/JWT/fila/biblioteca de e-mail; tentativas de login numa tabela simples; nenhuma dependência npm nova)
 - [x] Verificabilidade (tabelas acima; itens de cookie/SMTP marcados como manuais)
 - [x] Dependências da Arquitetura Limpa respeitadas (Domain puro; Application com interfaces; EF, SMTP, cache e cookies só em Infrastructure/Api; mapeamento via `IEntityTypeConfiguration`)

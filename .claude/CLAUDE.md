@@ -11,7 +11,7 @@ Projeto desenvolvido com **Spec-Driven Development (SDD)**: a especificação é
 .claude/
   CLAUDE.md          # este arquivo
   CONSTITUTION.md    # princípios e restrições
-  commands/          # comandos do fluxo SDD (/specify, /plan, /tasks, /implement)
+  commands/          # comandos do fluxo SDD (/especificar, /planejar, /tarefas, /implementar)
   skills/            # skills específicas do projeto
 specs/
   _templates/        # templates de spec, plan e tasks
@@ -39,10 +39,10 @@ docker compose exec api dotnet ef database update --project src/Palestra.Infrast
 Solution: `backend/Palestra.slnx` (Domain, Application, Infrastructure, Api + Palestra.Tests). Health check: `GET /health`.
 
 ## Fluxo SDD
-1. **Specify** — `/specify <descrição>` cria `specs/NNN-nome/spec.md` (requisitos, histórias, critérios de aceite).
-2. **Plan** — `/plan` gera `plan.md` respeitando a constituição.
-3. **Tasks** — `/tasks` quebra o plano em `tasks.md`.
-4. **Implement** — `/implement` executa as tarefas, marcando-as como concluídas.
+1. **Specify** — `/especificar <descrição>` cria `specs/NNN-nome/spec.md` (requisitos, histórias, critérios de aceite).
+2. **Plan** — `/planejar` gera `plan.md` respeitando a constituição.
+3. **Tasks** — `/tarefas` quebra o plano em `tasks.md`.
+4. **Implement** — `/implementar` executa as tarefas, marcando-as como concluídas.
 
 ## Regras de trabalho
 - Não escrever código sem spec aprovada. Mudou o comportamento? Atualize a spec primeiro.
