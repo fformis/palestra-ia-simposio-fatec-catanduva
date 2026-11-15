@@ -36,6 +36,18 @@ export function Sidebar({ id, open, collapsed, onToggleCollapsed, onClose }: Sid
         <button type="button" className={styles.closeBtn} aria-label="Fechar menu" onClick={onClose}>
           <CloseIcon />
         </button>
+        <button
+          type="button"
+          className={styles.collapseBtn}
+          aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
+          title={collapsed ? 'Expandir menu' : 'Recolher menu'}
+          aria-pressed={collapsed}
+          onClick={onToggleCollapsed}
+        >
+          <span className={styles.chevron}>
+            <ChevronIcon />
+          </span>
+        </button>
       </div>
 
       {user && <UserBadge user={user} onNavigate={onClose} />}
@@ -57,19 +69,6 @@ export function Sidebar({ id, open, collapsed, onToggleCollapsed, onClose }: Sid
       <button type="button" className={styles.logoutBtn} onClick={signOut} title={collapsed ? 'Sair' : undefined}>
         <LogoutIcon />
         <span className={styles.label}>Sair</span>
-      </button>
-
-      <button
-        type="button"
-        className={styles.collapseBtn}
-        aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
-        aria-pressed={collapsed}
-        onClick={onToggleCollapsed}
-      >
-        <span className={styles.chevron}>
-          <ChevronIcon />
-        </span>
-        <span className={styles.label}>Recolher</span>
       </button>
     </aside>
   )
