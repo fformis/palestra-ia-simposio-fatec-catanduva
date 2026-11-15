@@ -14,7 +14,7 @@ import { TimelineSection } from './TimelineSection'
 import styles from './profile.module.css'
 
 export function Profile() {
-  const { user } = useAuth()
+  const { user, setPhotoVersion } = useAuth()
   const [profile, setProfile] = useState<ProfileData | null>(null)
   const [failed, setFailed] = useState(false)
 
@@ -40,6 +40,12 @@ export function Profile() {
       active = false
     }
   }, [])
+
+  // Spec 007: mantém o avatar do menu em sincronia com a foto do perfil.
+  const loadedPhotoVersion = profile?.photoVersion
+  useEffect(() => {
+    if (loadedPhotoVersion !== undefined) setPhotoVersion(loadedPhotoVersion)
+  }, [loadedPhotoVersion, setPhotoVersion])
 
   if (!user) return null
 

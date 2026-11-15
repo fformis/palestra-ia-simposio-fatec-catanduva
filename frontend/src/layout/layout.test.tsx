@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { beforeEach, expect, it, vi } from 'vitest'
@@ -14,9 +14,9 @@ beforeEach(() => {
 const logout = vi.fn().mockResolvedValue(undefined)
 const user = { id: '1', firstName: 'Ana', lastName: 'Silva', email: 'ana@x.com' }
 
-const setup = () =>
+const setup = (photoVersion: string | null = null) =>
   render(
-    <AuthContext.Provider value={{ user, status: 'authenticated', login: vi.fn(), logout }}>
+    <AuthContext.Provider value={{ user, photoVersion, setPhotoVersion: vi.fn(), status: 'authenticated', login: vi.fn(), logout }}>
     <ThemeProvider>
       <MemoryRouter>
         <Routes>
@@ -65,6 +65,24 @@ it('botão de recolher fica no topo, ao lado da marca, e só tem ícone', () => 
   const button = screen.getByRole('button', { name: 'Recolher menu' })
   expect(button.parentElement).toContainElement(screen.getByText('Palestra IA'))
   expect(button).toHaveTextContent('')
+})
+
+// RF-01 / RF-02 / RF-04 (spec 007)
+it('avatar do menu mostra a foto quando existe e as iniciais quando não', () => {
+  setup('v1')
+  expect(document.querySelector('img')).toHaveAttribute('src', expect.stringContaining('/api/profile/photo?v=v1'))
+})
+
+it('avatar do menu mostra as iniciais sem foto', () => {
+  setup(null)
+  expect(screen.getByText('AS')).toBeInTheDocument()
+  expect(document.querySelector('img')).toBeNull()
+})
+
+it('avatar do menu volta às iniciais se a foto falhar ao carregar', () => {
+  setup('v1')
+  fireEvent.error(document.querySelector('img')!)
+  expect(screen.getByText('AS')).toBeInTheDocument()
 })
 
 // RF-19 / RF-22
