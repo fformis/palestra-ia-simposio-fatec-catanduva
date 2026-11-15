@@ -24,7 +24,14 @@ vi.mock('../services/authService', () => ({
   },
 }))
 
-const anon = (login = vi.fn()): AuthContextValue => ({ user: null, status: 'anonymous', login, logout: vi.fn() })
+const anon = (login = vi.fn()): AuthContextValue => ({
+  user: null,
+  photoVersion: null,
+  setPhotoVersion: vi.fn(),
+  status: 'anonymous',
+  login,
+  logout: vi.fn(),
+})
 
 const renderAt = (ui: React.ReactNode, path = '/', ctx = anon()) =>
   render(

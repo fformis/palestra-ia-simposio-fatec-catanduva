@@ -97,6 +97,7 @@
   color: var(--color-on-primary);
   background: var(--color-primary);
   font-size: var(--text-sm);
+  object-fit: cover;
 }
 .userName { overflow: hidden; text-overflow: ellipsis; }
 .chevron { display: grid; transition: transform var(--dur-base) var(--ease-out); }

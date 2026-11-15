@@ -5,6 +5,9 @@ import App from './App'
 import { authService } from './services/authService'
 
 vi.mock('./services/authService', () => ({ authService: { me: vi.fn(), logout: vi.fn() } }))
+vi.mock('./services/profileService', () => ({
+  profileService: { getProfile: vi.fn().mockResolvedValue({ photoVersion: null }), photoUrl: vi.fn() },
+}))
 
 beforeEach(() => {
   vi.mocked(authService.me).mockResolvedValue({ id: '1', firstName: 'Ana', lastName: 'Silva', email: 'ana@x.com' })
