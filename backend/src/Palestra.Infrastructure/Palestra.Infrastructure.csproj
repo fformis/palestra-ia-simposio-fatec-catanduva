@@ -13,6 +13,12 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Dados da carga de usuários de teste (spec 006), lidos pela migration SeedTestUsers e pelos testes. -->
+    <EmbeddedResource Include="Persistence\Seed\TestUsers\users.json" LogicalName="Seed.users.json" />
+    <EmbeddedResource Include="Persistence\Seed\TestUsers\photos\*.png" LogicalName="Seed.photos.%(Filename)%(Extension)" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
