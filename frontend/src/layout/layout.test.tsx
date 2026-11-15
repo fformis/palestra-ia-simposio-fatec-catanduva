@@ -59,6 +59,14 @@ it('recolher o menu é lembrado após recarregar', async () => {
   expect(screen.getByRole('button', { name: 'Expandir menu' })).toHaveAttribute('aria-pressed', 'true')
 })
 
+// RF-01 / RF-02 (spec 005)
+it('botão de recolher fica no topo, ao lado da marca, e só tem ícone', () => {
+  setup()
+  const button = screen.getByRole('button', { name: 'Recolher menu' })
+  expect(button.parentElement).toContainElement(screen.getByText('Palestra IA'))
+  expect(button).toHaveTextContent('')
+})
+
 // RF-19 / RF-22
 it('menu mostra nome e sobrenome no topo e Sair encerra a sessão', async () => {
   setup()
