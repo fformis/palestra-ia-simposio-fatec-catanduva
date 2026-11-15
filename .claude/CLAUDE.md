@@ -36,6 +36,12 @@ dotnet test --project backend/tests/Palestra.Tests  # testes backend (xUnit v3)
 cd frontend && npm test                             # testes frontend (Vitest)
 docker compose exec api dotnet ef database update --project src/Palestra.Infrastructure --startup-project src/Palestra.Api   # aplica migrations (tool em backend/dotnet-tools.json)
 ```
+**Usuários de teste (spec 006):** a migration `SeedTestUsers` cria 100 usuários de TI com perfil completo (`nome.sobrenome@exemplo.com`, senha `senha123`, contas ativas; **só para desenvolvimento e demonstração**). Vem junto do `database update` acima; para removê-los (sem afetar outros usuários), reverta a migration:
+```bash
+docker compose exec api dotnet ef database update 20261112023721_AddProfile --project src/Palestra.Infrastructure --startup-project src/Palestra.Api
+```
+Os avatares ilustrados (CC0) são gerados por `backend/src/Palestra.Infrastructure/Persistence/Seed/TestUsers/gerar_avatares.py`; ver `AVATARES.md` na mesma pasta.
+
 Solution: `backend/Palestra.slnx` (Domain, Application, Infrastructure, Api + Palestra.Tests). Health check: `GET /health`.
 
 ## Fluxo SDD
