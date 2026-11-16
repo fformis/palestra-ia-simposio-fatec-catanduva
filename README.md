@@ -1,4 +1,6 @@
-# Palestra IA — Simpósio FATEC Catanduva
+# 33° - Simpósio de Tecnologia da FATEC Catanduva
+
+## Palestra: Do Prompt ao SDD
 
 Projeto de demonstração da palestra sobre **IA no desenvolvimento de software** no Simpósio da FATEC Catanduva. A ideia é mostrar, ao vivo, como construir uma aplicação completa com um assistente de IA seguindo **Spec-Driven Development (SDD)**: a **especificação é a fonte da verdade** e o código é consequência dela.
 
