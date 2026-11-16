@@ -72,4 +72,4 @@ Regras:
 - A solução inteira (api, frontend, postgres) sobe com um único `docker compose up` na raiz.
 - Nenhum pré-requisito local além do Docker.
 - Configuração por variáveis de ambiente; segredos em `.env` (ignorado pelo git), com `.env.example` versionado.
-- Dados do PostgreSQL em volume nomeado; migrations aplicadas de forma explícita e documentada.
+- Dados do PostgreSQL em volume nomeado; migrations aplicadas automaticamente na inicialização da API (`Database.Migrate()`); o comando manual `dotnet ef database update` continua documentado no CLAUDE.md.
