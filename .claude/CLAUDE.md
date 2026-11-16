@@ -31,10 +31,10 @@ C# .NET 10 / ASP.NET Core / EF Core (Code First) · Arquitetura Limpa · xUnit �
 
 ## Comandos
 ```bash
-cp .env.example .env && docker compose up --build   # sobe tudo: web :5173 · api :8080 · postgres :5432 · e-mails de teste (smtp4dev) :3100
+cp .env.example .env && docker compose up --build   # sobe tudo (a API aplica as migrations ao iniciar): web :5173 · api :8080 · postgres :5432 · e-mails de teste (smtp4dev) :3100
 dotnet test --project backend/tests/Palestra.Tests  # testes backend (xUnit v3)
 cd frontend && npm test                             # testes frontend (Vitest)
-docker compose exec api dotnet ef database update --project src/Palestra.Infrastructure --startup-project src/Palestra.Api   # aplica migrations (tool em backend/dotnet-tools.json)
+docker compose exec api dotnet ef database update --project src/Palestra.Infrastructure --startup-project src/Palestra.Api   # aplica migrations manualmente, se necessário (tool em backend/dotnet-tools.json)
 ```
 **Usuários de teste (spec 006):** a migration `SeedTestUsers` cria 100 usuários de TI com perfil completo (`nome.sobrenome@exemplo.com`, senha `senha123`, contas ativas; **só para desenvolvimento e demonstração**). Vem junto do `database update` acima; para removê-los (sem afetar outros usuários), reverta a migration:
 ```bash
