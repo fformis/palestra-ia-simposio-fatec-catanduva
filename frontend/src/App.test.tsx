@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { beforeEach, expect, it, vi } from 'vitest'
 import App from './App'
 import { authService } from './services/authService'
@@ -21,9 +20,17 @@ it('exibe o título da aplicação na Home', async () => {
   expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('Palestra IA')
 })
 
-it('Home leva ao catálogo com paleta, tipografia, componentes e animações', async () => {
+it('Home não exibe cartão nem link do Design System', async () => {
   render(<App />)
-  await userEvent.click(await screen.findByRole('link', { name: /Abrir catálogo/ }))
+  await screen.findByRole('heading', { level: 1 })
+  expect(screen.queryByRole('heading', { name: 'Design System' })).not.toBeInTheDocument()
+  expect(screen.queryByRole('link', { name: /catálogo/i })).not.toBeInTheDocument()
+})
+
+it('URL direta /design-system exibe paleta, tipografia, componentes e animações', async () => {
+  history.pushState({}, '', '/design-system')
+  render(<App />)
+  await screen.findByRole('heading', { name: 'Paleta' })
   for (const name of ['Paleta', 'Tipografia', 'Componentes', 'Animações']) {
     expect(screen.getByRole('heading', { name })).toBeInTheDocument()
   }

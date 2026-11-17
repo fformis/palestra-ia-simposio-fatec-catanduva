@@ -1,7 +1,6 @@
 .page { display: grid; gap: var(--space-6); }
 .lead { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 40rem; }
 .muted { color: var(--color-text-muted); margin: var(--space-2) 0 var(--space-4); }
-.cardLink { display: inline-flex; align-items: center; min-height: var(--touch-target); font-weight: 600; }
 
 .section { display: grid; gap: var(--space-4); }
 .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr)); }
