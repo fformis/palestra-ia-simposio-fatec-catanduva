@@ -31,9 +31,9 @@ Público: pessoas usuárias do app em desktop, tablet e celular, em qualquer con
 - **RF-11 — Menu lateral esquerdo:** em desktop, exibe menu fixo à esquerda com os itens das principais funcionalidades, indicando visualmente o item ativo e levando à respectiva tela.
 - **RF-12 — Menu em telas pequenas:** em celular **e tablet**, o menu lateral fica recolhido e é aberto por um botão, sobrepondo o conteúdo, e fecha ao navegar ou ao tocar fora.
 - **RF-13 — Menu recolhível no desktop:** o usuário pode recolher o menu para uma versão compacta (apenas ícones) e expandi-lo novamente; a escolha é lembrada.
-- **RF-14 — Itens do menu:** o menu contém apenas **Home** nesta feature (Logout fica para quando houver autenticação). No topo do menu há um **placeholder de logotipo** (bloco/ícone genérico + nome textual provisório), fácil de substituir depois. A página de catálogo (RF-15) fica acessível a partir da Home. Novos itens serão adicionados pelas features futuras.
+- **RF-14 — Itens do menu:** o menu contém apenas **Home** nesta feature (Logout fica para quando houver autenticação). No topo do menu há um **placeholder de logotipo** (bloco/ícone genérico + nome textual provisório), fácil de substituir depois. A página de catálogo (RF-15) fica acessível apenas por URL direta (spec 008). Novos itens serão adicionados pelas features futuras.
 - **RF-16 — Seletor de tema no cabeçalho:** o seletor de tema (RF-03) fica no cabeçalho, no canto superior direito, visível em todas as telas e faixas de largura.
-- **RF-15 — Página de catálogo:** uma tela "Design System" (acessada pela Home) exibe paletas, tipografia, componentes e animações nos dois temas, servindo de referência viva e de demonstração.
+- **RF-15 — Página de catálogo:** uma tela "Design System" (acessada apenas por URL direta, spec 008) exibe paletas, tipografia, componentes e animações nos dois temas, servindo de referência viva e de demonstração.
 
 ## Paleta aprovada
 **Paleta A — "Índigo" (aprovada):** moderna e neutra, boa legibilidade.
@@ -87,7 +87,7 @@ O tema escuro usa fundos azulados bem escuros (não preto puro) e cores de desta
 - [x] **RF-13:** Dado um desktop, quando o usuário recolhe o menu e recarrega a página, então o menu continua recolhido.
 - [x] **RF-10:** Dadas larguras de celular, tablet e desktop, quando o app é exibido, então não há rolagem horizontal e o conteúdo se reorganiza.
 - [x] **RF-09:** Dado que o sistema pede movimento reduzido, quando o usuário navega e abre/fecha o menu, então não há animações de deslocamento/escala.
-- [x] **RF-15:** Dada a página de catálogo, quando aberta nos dois temas, então exibe paleta, tipografia, componentes e animações definidos.
+- [x] **RF-15:** Dada a página de catálogo, quando aberta por URL direta nos dois temas, então exibe paleta, tipografia, componentes e animações definidos.
 - [x] **RNF-01:** Dado cada par texto/fundo da paleta aprovada, quando medido, então atinge o contraste mínimo AA nos dois temas.
 
 ## Fora de escopo
