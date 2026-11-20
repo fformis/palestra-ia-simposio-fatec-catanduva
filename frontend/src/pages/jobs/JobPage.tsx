@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router'
 import { Alert } from '../../components/Alert'
 import { Badge } from '../../components/Badge'
 import { Button } from '../../components/Button'
 import { Card } from '../../components/Card'
 import { PencilIcon } from '../../components/icons'
 import { Skeleton } from '../../components/Skeleton'
-import { ApiError } from '../../services/api'
 import { jobService } from '../../services/jobService'
-import type { Engagement, Job, JobInput } from '../../services/jobTypes'
+import type { Job, JobInput } from '../../services/jobTypes'
 import { CandidateList } from './CandidateList'
+import { JobActions } from './JobActions'
 import { BENEFITS, CONTRACTS, formatDate, formatSalary } from './format'
 import { RichText } from './RichText'
 import styles from './jobs.module.css'
 
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`
 
-/** RF-11: página da vaga, com curtir/candidatar-se (RF-12 a RF-21) e a gestão do anunciante (RF-08 a RF-10, RF-22). */
+/** RF-11: página da vaga, com curtir/candidatar-se (RF-12 a RF-21, em JobActions) e a gestão do anunciante (RF-08 a RF-10, RF-22). */
 export function JobPage() {
   const { id = '' } = useParams()
   const location = useLocation()
@@ -24,8 +24,7 @@ export function JobPage() {
   const [job, setJob] = useState<Job | null>(null)
   const [missing, setMissing] = useState(false)
   const [notice, setNotice] = useState<string | null>((location.state as { notice?: string } | null)?.notice ?? null)
-  const [error, setError] = useState<'profile_incomplete' | 'generic' | null>(null)
-  const [confirming, setConfirming] = useState<'apply' | 'withdraw' | null>(null)
+  const [error, setError] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
 
   useEffect(() => {
@@ -43,18 +42,16 @@ export function JobPage() {
   if (!job) return <Skeleton height="24rem" />
 
   /** Executa uma ação e mescla a resposta na vaga exibida, sem recarregar a página. */
-  const act = async (name: string, action: () => Promise<Engagement | Job>, message?: string) => {
+  /** Ações do anunciante (ativar/inativar); curtir e candidatar-se ficam em JobActions. */
+  const act = async (name: string, action: () => Promise<Job>, message: string) => {
     setBusy(name)
-    setError(null)
+    setError(false)
     setNotice(null)
     try {
-      const result = await action()
-      setJob((j) => (j ? { ...j, ...result } : j))
-      if (message) setNotice(message)
-      setConfirming(null)
-    } catch (e) {
-      setError(e instanceof ApiError && e.code === 'profile_incomplete' ? 'profile_incomplete' : 'generic')
-      setConfirming(null)
+      setJob(await action())
+      setNotice(message)
+    } catch {
+      setError(true)
     } finally {
       setBusy(null)
     }
@@ -131,63 +128,10 @@ export function JobPage() {
               </Button>
             </div>
           ) : (
-            <div className={styles.actions}>
-              <Button
-                variant={job.likedByMe ? 'primary' : 'secondary'}
-                aria-pressed={job.likedByMe}
-                aria-label={job.likedByMe ? 'Descurtir' : 'Curtir'}
-                loading={busy === 'like'}
-                onClick={() => act('like', () => (job.likedByMe ? jobService.unlike(job.id) : jobService.like(job.id)))}
-              >
-                {job.likedByMe ? '♥ Curtida' : '♡ Curtir'}
-              </Button>
-              {!confirming && (
-                <Button
-                  variant={job.appliedByMe ? 'ghost' : 'primary'}
-                  onClick={() => {
-                    setError(null)
-                    setConfirming(job.appliedByMe ? 'withdraw' : 'apply')
-                  }}
-                >
-                  {job.appliedByMe ? 'Desistir' : 'Candidatar-se'}
-                </Button>
-              )}
-            </div>
+            <JobActions job={job} onChange={(e) => setJob((j) => (j ? { ...j, ...e } : j))} />
           )}
 
-          {confirming && (
-            <div className={styles.confirm} role="group" aria-label={confirming === 'apply' ? 'Confirmar candidatura' : 'Confirmar desistência'}>
-              <p>
-                {confirming === 'apply'
-                  ? 'Ao se candidatar, seu perfil e seu e-mail ficarão visíveis ao anunciante desta vaga.'
-                  : 'Desistir da candidatura? Você sai da lista de candidatos e o anunciante deixa de ver seu perfil.'}
-              </p>
-              <div className={styles.actions}>
-                <Button
-                  loading={busy === 'apply'}
-                  onClick={() =>
-                    act(
-                      'apply',
-                      () => (confirming === 'apply' ? jobService.apply(job.id) : jobService.withdraw(job.id)),
-                      confirming === 'apply' ? 'Candidatura enviada.' : 'Você desistiu da candidatura.',
-                    )
-                  }
-                >
-                  {confirming === 'apply' ? 'Confirmar candidatura' : 'Confirmar desistência'}
-                </Button>
-                <Button variant="ghost" onClick={() => setConfirming(null)}>
-                  Cancelar
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {error === 'profile_incomplete' && (
-            <Alert tone="warning" title="Complete seu perfil para se candidatar">
-              Adicione ao menos uma ocupação ou uma formação no <Link to="/perfil">seu perfil</Link>.
-            </Alert>
-          )}
-          {error === 'generic' && (
+          {error && (
             <Alert tone="danger" title="Não foi possível concluir">
               Tente novamente em instantes.
             </Alert>

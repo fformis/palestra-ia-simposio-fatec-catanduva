@@ -46,6 +46,20 @@ public class JobStore : IJobRepository, IUnitOfWork
             .Select(u => new CandidateRow(u.Id, u.FirstName, u.LastName, u.Email, null, Applications[(jobId, u.Id)]))
             .ToList());
 
+    public async Task<IReadOnlyList<FeedRow>> ListFeedAsync(FeedQuery q, CancellationToken ct = default)
+    {
+        var rows = new List<FeedRow>();
+        foreach (var j in Jobs
+            .Where(j => q.Mine ? j.OwnerId == q.UserId : j.Status == JobStatus.Active)
+            .Where(j => q.AfterCreatedAt is null || j.CreatedAt < q.AfterCreatedAt || (j.CreatedAt == q.AfterCreatedAt && j.Id.CompareTo(q.AfterId!.Value) < 0))
+            .OrderByDescending(j => j.CreatedAt).ThenByDescending(j => j.Id).Take(q.Take))
+        {
+            var owner = Users.Users.First(u => u.Id == j.OwnerId);
+            rows.Add(new FeedRow(j, owner.FirstName, owner.LastName, null, await GetEngagementAsync(j.Id, q.UserId, ct)));
+        }
+        return rows;
+    }
+
     public Task SaveChangesAsync(CancellationToken ct = default) => Task.CompletedTask;
 }
 
@@ -58,7 +72,7 @@ public class JobHarness
 
     public JobHarness() => Owner = NewUser("Olga", "Dona", withProfile: false);
 
-    public JobReader Reader => new(Store, Store.Users);
+    public JobReader Reader => new(Store, Store.Users, Store.Profiles);
     public CreateJob Create => new(Store, Store, Clock, Options, Reader);
     public GetJob Get => new(Reader);
     public UpdateJob Update => new(Store, Options, Reader);

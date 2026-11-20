@@ -162,7 +162,11 @@ namespace Palestra.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId", "CreatedAt", "Id")
+                        .IsDescending(false, true, true);
+
+                    b.HasIndex("Status", "CreatedAt", "Id")
+                        .IsDescending(false, true, true);
 
                     b.ToTable("jobs", (string)null);
                 });

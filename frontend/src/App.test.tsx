@@ -4,6 +4,9 @@ import App from './App'
 import { authService } from './services/authService'
 
 vi.mock('./services/authService', () => ({ authService: { me: vi.fn(), logout: vi.fn() } }))
+vi.mock('./services/jobService', () => ({
+  jobService: { feed: vi.fn().mockResolvedValue({ items: [], nextCursor: null }) },
+}))
 vi.mock('./services/profileService', () => ({
   profileService: { getProfile: vi.fn().mockResolvedValue({ photoVersion: null }), photoUrl: vi.fn() },
 }))
@@ -15,9 +18,13 @@ beforeEach(() => {
   vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener() {}, removeEventListener() {} }))
 })
 
-it('exibe o título da aplicação na Home', async () => {
+// Spec 010, RF-01/RF-02
+it('Home exibe o feed de vagas, e não o texto de boas-vindas', async () => {
   render(<App />)
-  expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('Palestra IA')
+  expect(await screen.findByRole('heading', { level: 1, name: 'Vagas' })).toBeInTheDocument()
+  expect(screen.getByRole('radio', { name: 'Todas as vagas' })).toBeChecked()
+  expect(screen.queryByText(/Bem-vindo/)).not.toBeInTheDocument()
+  expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
 })
 
 it('Home não exibe cartão nem link do Design System', async () => {

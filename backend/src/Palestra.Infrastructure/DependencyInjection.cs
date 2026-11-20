@@ -63,6 +63,8 @@ public static class DependencyInjection
         services.AddScoped<ListCandidates>();
         services.AddScoped<GetCandidateProfile>();
         services.AddScoped<GetCandidatePhoto>();
+        services.AddScoped<ListFeed>();
+        services.AddScoped<GetOwnerPhoto>();
         return services;
     }
 }

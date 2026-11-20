@@ -44,7 +44,7 @@ const job = (over: Partial<Job> = {}): Job => ({
   status: 'active',
   createdAt: '2026-11-20T12:00:00Z',
   imageVersion: null,
-  owner: { firstName: 'Olga', lastName: 'Dona' },
+  owner: { firstName: 'Olga', lastName: 'Dona', photoVersion: null },
   isOwner: false,
   likes: 0,
   candidates: 0,
