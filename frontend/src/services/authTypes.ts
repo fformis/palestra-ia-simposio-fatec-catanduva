@@ -17,3 +17,5 @@ export type ApiErrorCode =
   | 'invalid_image'
   | 'image_too_large'
   | 'not_found'
+  | 'own_job'
+  | 'profile_incomplete'

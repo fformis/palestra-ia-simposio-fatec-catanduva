@@ -99,3 +99,9 @@ it('nome do usuário no menu leva ao perfil', () => {
   setup()
   expect(screen.getByRole('link', { name: 'Abrir perfil de Ana Silva' })).toHaveAttribute('href', '/perfil')
 })
+
+// Spec 009, RF-01
+it('menu tem o item Criar ligado à criação de vaga', () => {
+  setup()
+  expect(screen.getByRole('link', { name: 'Criar' })).toHaveAttribute('href', '/criar')
+})

@@ -1,7 +1,7 @@
-import { useId, type TextareaHTMLAttributes } from 'react'
+import { useId, type ComponentPropsWithRef } from 'react'
 import styles from './TextField.module.css'
 
-interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps extends ComponentPropsWithRef<'textarea'> {
   label: string
   help?: string
   error?: string
