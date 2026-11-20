@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Palestra.Application.Auth;
 using Palestra.Domain.Auth;
+using Palestra.Domain.Jobs;
 using Palestra.Domain.Profiles;
 
 namespace Palestra.Infrastructure.Persistence;
@@ -15,6 +16,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Occupation> Occupations => Set<Occupation>();
     public DbSet<Education> Educations => Set<Education>();
     public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Job> Jobs => Set<Job>();
+    public DbSet<JobImage> JobImages => Set<JobImage>();
+    public DbSet<JobLike> JobLikes => Set<JobLike>();
+    public DbSet<JobApplication> JobApplications => Set<JobApplication>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

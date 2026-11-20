@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Palestra.Application.Auth;
+using Palestra.Application.Jobs;
 using Palestra.Application.Profiles;
 using Palestra.Infrastructure.Auth;
 using Palestra.Infrastructure.Persistence;
@@ -46,6 +47,22 @@ public static class DependencyInjection
         services.AddScoped<SaveEducation>();
         services.AddScoped<SaveCourse>();
         services.AddScoped(typeof(RemoveItem<>));
+
+        services.AddSingleton(config.GetSection("Jobs").Get<JobsOptions>() ?? new JobsOptions());
+        services.AddScoped<IJobRepository, JobRepository>();
+        services.AddScoped<JobReader>();
+        services.AddScoped<CandidateAccess>();
+        services.AddScoped<CreateJob>();
+        services.AddScoped<GetJob>();
+        services.AddScoped<UpdateJob>();
+        services.AddScoped<UploadJobImage>();
+        services.AddScoped<GetJobImage>();
+        services.AddScoped<RemoveJobImage>();
+        services.AddScoped<SetLike>();
+        services.AddScoped<SetApplication>();
+        services.AddScoped<ListCandidates>();
+        services.AddScoped<GetCandidateProfile>();
+        services.AddScoped<GetCandidatePhoto>();
         return services;
     }
 }

@@ -35,15 +35,18 @@ interface TimelineSectionProps<T extends TimelineEntry> {
   /** Itens já na ordem de exibição (mais recente primeiro). */
   items: T[]
   view: (item: T) => TimelineView
-  form: (props: ItemFormProps<T>) => ReactNode
-  remove: (id: string) => Promise<unknown>
+  /** Somente leitura (spec 009, perfil do candidato): sem adicionar, editar nem remover. */
+  readOnly?: boolean
+  form?: (props: ItemFormProps<T>) => ReactNode
+  remove?: (id: string) => Promise<unknown>
   /** Chamado após salvar ou remover, para recarregar o perfil. */
-  onChanged: () => Promise<unknown> | void
+  onChanged?: () => Promise<unknown> | void
 }
 
 /** Seção do perfil em linha do tempo, com adicionar, editar e remover (confirmação inline). */
 export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionProps<T>) {
-  const { title, itemName, emptyText, items, view, form, remove, onChanged } = props
+  const { title, itemName, emptyText, items, view, form, remove, onChanged, readOnly = false } = props
+  const editable = !readOnly && form !== undefined && remove !== undefined
   const headingId = useId()
   const [editing, setEditing] = useState<string | 'new' | null>(null)
   const [confirming, setConfirming] = useState<string | null>(null)
@@ -55,14 +58,14 @@ export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionP
     setEditing(null)
     setConfirming(null)
     setNotice(message)
-    await onChanged()
+    await onChanged?.()
   }
 
   const confirmRemove = async (id: string) => {
     setRemoving(true)
     setFailed(false)
     try {
-      await remove(id)
+      await remove?.(id)
       await done('Item removido.')
     } catch {
       setFailed(true)
@@ -83,7 +86,7 @@ export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionP
       <section aria-labelledby={headingId}>
         <div className={styles.sectionHead}>
           <h2 id={headingId}>{title}</h2>
-          {editing !== 'new' && (
+          {editable && editing !== 'new' && (
             <Button variant="secondary" onClick={() => start('new')}>
               <PlusIcon /> Adicionar {itemName}
             </Button>
@@ -102,7 +105,7 @@ export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionP
         )}
 
         {editing === 'new' && (
-          <div className={styles.editing}>{form({ onSaved: () => done('Item salvo.'), onCancel: () => setEditing(null) })}</div>
+          <div className={styles.editing}>{form?.({ onSaved: () => done('Item salvo.'), onCancel: () => setEditing(null) })}</div>
         )}
 
         {items.length === 0 && editing !== 'new' && <p className={styles.empty}>{emptyText}</p>}
@@ -115,7 +118,7 @@ export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionP
                 <li key={item.id} className={item.end ? styles.item : `${styles.item} ${styles.current}`}>
                   {editing === item.id ? (
                     <div className={styles.editing}>
-                      {form({ item, onSaved: () => done('Item salvo.'), onCancel: () => setEditing(null) })}
+                      {form?.({ item, onSaved: () => done('Item salvo.'), onCancel: () => setEditing(null) })}
                     </div>
                   ) : (
                     <>
@@ -125,6 +128,7 @@ export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionP
                           <p className={styles.itemSub}>{v.subtitle}</p>
                           <p className={styles.period}>{formatPeriod(item.start, item.end)}</p>
                         </div>
+                        {editable && (
                         <div className={styles.actions}>
                           <Button variant="ghost" className={styles.iconBtn} aria-label={`Editar ${v.title}`} onClick={() => start(item.id)}>
                             <PencilIcon />
@@ -141,6 +145,7 @@ export function TimelineSection<T extends TimelineEntry>(props: TimelineSectionP
                             <TrashIcon />
                           </Button>
                         </div>
+                        )}
                       </div>
                       {v.description && <p className={styles.description}>{v.description}</p>}
                       {confirming === item.id && (
