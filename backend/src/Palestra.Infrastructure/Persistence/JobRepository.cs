@@ -43,6 +43,36 @@ public class JobRepository(AppDbContext db) : IJobRepository
                   select new CandidateRow(u.Id, u.FirstName, u.LastName, u.Email, p == null ? null : p.PhotoVersion, a.AppliedAt))
                  .ToListAsync(ct);
 
+    public async Task<IReadOnlyList<FeedRow>> ListFeedAsync(FeedQuery q, CancellationToken ct = default)
+    {
+        var jobs = db.Jobs.AsNoTracking().Where(j => q.Mine ? j.OwnerId == q.UserId : j.Status == JobStatus.Active);
+        if (q.AfterCreatedAt is { } at && q.AfterId is { } after)
+            jobs = jobs.Where(j => j.CreatedAt < at || (j.CreatedAt == at && j.Id.CompareTo(after) < 0));
+
+        // Uma única consulta: anunciante, foto e contagens em subconsultas (sem N+1).
+        var rows = await (from j in jobs.OrderByDescending(j => j.CreatedAt).ThenByDescending(j => j.Id).Take(q.Take)
+                          join u in db.Users on j.OwnerId equals u.Id
+                          join p in db.Profiles on u.Id equals p.UserId into profiles
+                          from p in profiles.DefaultIfEmpty()
+                          select new
+                          {
+                              Job = j,
+                              u.FirstName,
+                              u.LastName,
+                              Photo = p == null ? null : p.PhotoVersion,
+                              Likes = db.JobLikes.Count(l => l.JobId == j.Id),
+                              Candidates = db.JobApplications.Count(a => a.JobId == j.Id),
+                              Liked = db.JobLikes.Any(l => l.JobId == j.Id && l.UserId == q.UserId),
+                              Applied = db.JobApplications.Any(a => a.JobId == j.Id && a.UserId == q.UserId),
+                          })
+                         .ToListAsync(ct);
+
+        return rows
+            .OrderByDescending(r => r.Job.CreatedAt).ThenByDescending(r => r.Job.Id)
+            .Select(r => new FeedRow(r.Job, r.FirstName, r.LastName, r.Photo, new EngagementDto(r.Likes, r.Candidates, r.Liked, r.Applied)))
+            .ToList();
+    }
+
     /// <summary>RNF-04: grava se ainda não existe; chave repetida por clique simultâneo conta como "já existe".</summary>
     private async Task InsertOnceAsync<T>(DbSet<T> set, System.Linq.Expressions.Expression<Func<T, bool>> exists, T entity, CancellationToken ct) where T : class
     {

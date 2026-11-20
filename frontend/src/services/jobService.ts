@@ -1,10 +1,14 @@
 import { api, BASE_URL } from './api'
-import type { Candidate, CandidateProfile, Engagement, Job, JobInput } from './jobTypes'
+import type { Candidate, CandidateProfile, Engagement, FeedScope, Job, JobFeedPage, JobInput } from './jobTypes'
 
 const base = '/api/jobs'
 const v = (version: string) => `?v=${encodeURIComponent(version)}`
 
 export const jobService = {
+  feed: (scope: FeedScope, cursor?: string) =>
+    api<JobFeedPage>('GET', `${base}?scope=${scope}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`),
+  ownerPhotoUrl: (id: string, version: string) => `${BASE_URL}${base}/${id}/owner/photo${v(version)}`,
+
   create: (input: JobInput) => api<Job>('POST', base, input),
   get: (id: string) => api<Job>('GET', `${base}/${id}`),
   update: (id: string, input: JobInput) => api<Job>('PUT', `${base}/${id}`, input),

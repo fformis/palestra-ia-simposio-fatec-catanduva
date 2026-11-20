@@ -8,13 +8,14 @@ namespace Palestra.Application.Jobs;
 // Vaga inativa para quem não é dono, ou ação do dono sobre vaga alheia, é tratada como inexistente (not_found).
 
 /// <summary>Monta o <see cref="JobDto"/> com anunciante e contagens.</summary>
-public class JobReader(IJobRepository repo, IUserRepository users)
+public class JobReader(IJobRepository repo, IUserRepository users, IProfileRepository profiles)
 {
     public async Task<JobDto> ToDtoAsync(Job job, Guid userId, CancellationToken ct)
     {
         var owner = await users.GetByIdAsync(job.OwnerId, ct);
+        var photo = (await profiles.GetProfileAsync(job.OwnerId, ct))?.PhotoVersion;
         var engagement = await repo.GetEngagementAsync(job.Id, userId, ct);
-        return JobDto.From(job, new OwnerDto(owner?.FirstName ?? "", owner?.LastName ?? ""), userId, engagement);
+        return JobDto.From(job, new OwnerDto(owner?.FirstName ?? "", owner?.LastName ?? "", photo?.UtcTicks.ToString()), userId, engagement);
     }
 
     /// <summary>Vaga visível ao usuário (RF-10), ou nulo.</summary>

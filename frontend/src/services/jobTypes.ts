@@ -29,8 +29,18 @@ export interface Job extends JobInput, Engagement {
   createdAt: string
   /** null = ilustração padrão. */
   imageVersion: string | null
-  owner: { firstName: string; lastName: string }
+  owner: { firstName: string; lastName: string; photoVersion: string | null }
   isOwner: boolean
+}
+
+/** Visões do feed (spec 010): todas as vagas ativas ou só as minhas. */
+export type FeedScope = 'all' | 'mine'
+
+export interface JobFeedPage {
+  /** Até 10 vagas, da mais recente para a mais antiga. */
+  items: Job[]
+  /** null = não há mais vagas. */
+  nextCursor: string | null
 }
 
 export interface Candidate {

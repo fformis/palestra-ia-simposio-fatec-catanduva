@@ -19,7 +19,9 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
         b.Property(x => x.ContractType).HasConversion<string>().HasMaxLength(10);
         b.Property(x => x.Salary).HasPrecision(12, 2);
         b.Property(x => x.Status).HasConversion<string>().HasMaxLength(10);
-        b.HasIndex(x => x.OwnerId);
+        // Feed (spec 010): keyset por (CreatedAt, Id) decrescente em cada visão.
+        b.HasIndex(x => new { x.OwnerId, x.CreatedAt, x.Id }).IsDescending(false, true, true);
+        b.HasIndex(x => new { x.Status, x.CreatedAt, x.Id }).IsDescending(false, true, true);
         b.HasOne<User>().WithMany().HasForeignKey(x => x.OwnerId).OnDelete(DeleteBehavior.Cascade);
     }
 }

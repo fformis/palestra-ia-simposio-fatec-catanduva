@@ -6,13 +6,25 @@ using Palestra.Application.Profiles;
 
 namespace Palestra.Api.Controllers;
 
-/// <summary>Vagas, curtidas, candidaturas e candidatos (spec 009). O usuário vem sempre do cookie.</summary>
+/// <summary>Vagas, curtidas, candidaturas e candidatos (specs 009 e 010). O usuário vem sempre do cookie.</summary>
 [ApiController]
 [Authorize]
 [Route("api/jobs")]
 public class JobsController : ControllerBase
 {
     private Guid UserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    // ---- Feed (spec 010) ----
+
+    [HttpGet]
+    public async Task<IActionResult> Feed([FromQuery] string? scope, [FromQuery] string? cursor, [FromServices] ListFeed useCase, CancellationToken ct)
+        => ToResult(await useCase.ExecuteAsync(UserId, scope, cursor, ct));
+
+    [HttpGet("{id:guid}/owner/photo")]
+    public async Task<IActionResult> OwnerPhoto(Guid id, [FromServices] GetOwnerPhoto useCase, CancellationToken ct)
+        => File(await useCase.ExecuteAsync(UserId, id, ct));
+
+    // ---- Vaga ----
 
     [HttpPost]
     public async Task<IActionResult> Create(JobInput input, [FromServices] CreateJob useCase, CancellationToken ct)

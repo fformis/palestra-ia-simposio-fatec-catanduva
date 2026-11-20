@@ -7,6 +7,7 @@ public class JobsOptions
     public int MaxImageBytes { get; set; } = 2 * 1024 * 1024;
     public int MaxTitleLength { get; set; } = 100;
     public int MaxDescriptionLength { get; set; } = 500;
+    public int FeedPageSize { get; set; } = 10;
 
     public JobLimits Limits => new(MaxTitleLength, MaxDescriptionLength);
 }
@@ -35,13 +36,16 @@ public interface IJobRepository
 
     Task<bool> HasApplicationAsync(Guid jobId, Guid userId, CancellationToken ct = default);
     Task<IReadOnlyList<CandidateRow>> ListCandidatesAsync(Guid jobId, CancellationToken ct = default);
+
+    /// <summary>Página do feed (spec 010): ordem (CreatedAt, Id) decrescente, a partir da posição do cursor.</summary>
+    Task<IReadOnlyList<FeedRow>> ListFeedAsync(FeedQuery query, CancellationToken ct = default);
 }
 
 public record JobInput(string? Title, string? Company, string? Description, List<string>? Benefits, string? ContractType, decimal? Salary, string? Status);
 
 public record EngagementDto(int Likes, int Candidates, bool LikedByMe, bool AppliedByMe);
 
-public record OwnerDto(string FirstName, string LastName);
+public record OwnerDto(string FirstName, string LastName, string? PhotoVersion);
 
 public record JobDto(
     Guid Id, string Title, string? Company, string Description, IReadOnlyList<string> Benefits, string ContractType,

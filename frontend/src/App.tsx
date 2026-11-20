@@ -4,7 +4,7 @@ import { RequireAuth } from './auth/RequireAuth'
 import { AppLayout } from './layout/AppLayout'
 import { PublicLayout } from './layout/PublicLayout'
 import { DesignSystem } from './pages/DesignSystem'
-import { Home } from './pages/Home'
+import { Feed } from './pages/feed/Feed'
 import { ForgotPassword } from './pages/auth/ForgotPassword'
 import { Login } from './pages/auth/Login'
 import { Register } from './pages/auth/Register'
@@ -31,7 +31,7 @@ export default function App() {
             </Route>
             <Route element={<RequireAuth />}>
               <Route element={<AppLayout />}>
-                <Route index element={<Home />} />
+                <Route index element={<Feed />} />
                 <Route path="perfil" element={<Profile />} />
                 <Route path="design-system" element={<DesignSystem />} />
                 <Route path="criar" element={<JobCreate />} />
