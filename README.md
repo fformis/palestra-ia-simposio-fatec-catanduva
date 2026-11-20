@@ -17,7 +17,7 @@ Cada elo referencia o anterior (spec → plano → tarefa → código/teste). Os
 
 ### O que a aplicação faz
 
-Uma rede de perfis profissionais, construída feature a feature (cada uma tem sua pasta em [`specs/`](specs)):
+Uma rede profissional de vagas: cada pessoa mantém seu perfil em linha do tempo, anuncia vagas e se candidata às vagas dos outros. Foi construída feature a feature (cada uma tem sua pasta em [`specs/`](specs)):
 
 | Spec | Feature |
 |---|---|
@@ -27,6 +27,15 @@ Uma rede de perfis profissionais, construída feature a feature (cada uma tem su
 | 005 | Ajuste do controle de recolher o menu |
 | 006 | 100 usuários de teste da área de TI, com perfil completo |
 | 007 | Foto do perfil no avatar do menu |
+| 008 | Remoção dos exemplos de design system da Home (catálogo segue em `/design-system`) |
+| 009 | Criação de vagas, curtidas, candidaturas e currículo do candidato em PDF |
+| 010 | Feed de vagas na Home ("Todas" / "Minhas"), com rolagem infinita |
+
+A spec `001-exemplo` serve de modelo, e os templates ficam em [`specs/_templates`](specs/_templates).
+
+### Slides
+
+Os slides da palestra estão em [`slides/`](slides): [`do-prompt-ao-sdd.html`](slides/do-prompt-ao-sdd.html) (abra no navegador) e [`do-prompt-ao-sdd.pdf`](slides/do-prompt-ao-sdd.pdf).
 
 ## Stack
 
@@ -39,6 +48,7 @@ C# .NET 10 · ASP.NET Core · EF Core (Code First) · Arquitetura Limpa · xUnit
 specs/       # uma pasta por feature: spec.md, plan.md, tasks.md
 backend/     # Domain, Application, Infrastructure, Api + tests
 frontend/    # React + TypeScript
+slides/      # slides da palestra (HTML e PDF)
 docker-compose.yml
 ```
 
@@ -85,6 +95,7 @@ docker-compose.yml
 
    - Use um usuário de teste: e-mail no formato `nome.sobrenome@exemplo.com` (escolha um nome de TI qualquer, consulte o banco para ver a lista) e senha `senha123`.
    - Ou crie uma conta na tela de registro: o link para definir a senha chega na caixa do smtp4dev (http://localhost:3100), pois nenhum e-mail real é enviado.
+   - Depois de entrar, a Home mostra o feed de vagas; use o item **Criar** do menu para anunciar uma vaga.
 
 > ⚠️ Os 100 usuários de teste são **somente para desenvolvimento e demonstração**.
 
